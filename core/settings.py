@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,27 +27,29 @@ SECRET_KEY = "django-insecure-5a_rd6rjoms!bmmrc02_z)muqgy2!j36cszb43*8(%xd2u!^x_
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "localhost",
-    "app",
+    "*",
 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "accounts.apps.AccountsConfig",
-    "items.apps.ItemsConfig",
-    "categories.apps.CategoriesConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt",
+    "accounts.apps.AccountsConfig",
+    "items.apps.ItemsConfig",
+    "categories.apps.CategoriesConfig",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -131,5 +134,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-    ]
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
+
+
+CORS_ALLOW_ALL_ORIGINS = True
