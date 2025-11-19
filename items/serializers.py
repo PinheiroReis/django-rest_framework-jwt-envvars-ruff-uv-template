@@ -6,4 +6,4 @@ from .models import Item
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
-        fields = ["url", "categories", "description"]
+        fields = ["url", "id", "categories", "description"]
